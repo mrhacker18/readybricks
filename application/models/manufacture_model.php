@@ -11,7 +11,7 @@ class Manufacture_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('users.*,manufacture.GSTIN,manufacture.VatNumber')
+			->select('users.*,manufacture.MenuId,manufacture.GSTIN,manufacture.VatNumber')
 		 	->join('users', 'users.UserId = manufacture.UserId', 'inner')
 		 	->group_by('UserId');
 		$data=$this->db->get($this->table)->result();
@@ -59,7 +59,7 @@ class Manufacture_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('UserId', $id)->update($this->table, $data);
+        return $this->db->where('MenuId', $id)->update($this->table, $data);
     }
 
     public function delete($id)

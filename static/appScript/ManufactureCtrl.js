@@ -38,10 +38,10 @@ function ManufactureCtrl($scope, $http){
             return false;
         }
 
-		if($scope.item.MobileNo==null || $scope.item.MobileNo=="" ){
+		if($scope.item.MobileNumber==null || $scope.item.MobileNumber=="" ){
             $('#mobileno').focus();
-            $scope.mobileError = true;
-            $scope.errors.mobilenoMsg = 'Please enter Mobile Number.';
+            $scope.mobilenumberError = true;
+            $scope.errors.mobilenumberMsg = 'Please enter Mobile Number.';
             return false;
         }
 		if($scope.item.Address==null || $scope.item.Address=="" ){
@@ -57,31 +57,36 @@ function ManufactureCtrl($scope, $http){
             return false;
         }
 		if($scope.item.Country==null || $scope.item.Country=="" ){
+			$("#country").focus();
             $scope.countryError = true;
             $scope.errors.countryMsg = 'Please select Country.';
             return false;
         }
 		if($scope.item.State==null || $scope.item.State=="" ){
+			$("#state").focus();
             $scope.stateError = true;
             $scope.errors.stateMsg = 'Please select State.';
             return false;
         }
 		if($scope.item.City==null || $scope.item.City=="" ){
+			$("#city").focus();
             $scope.cityError = true;
             $scope.errors.cityMsg = 'Please select city.';
             return false;
         }
 		if($scope.item.GstNo==null || $scope.item.GstNo=="" ){
+			$("#gstno").focus();
             $scope.gstnoError = true;
             $scope.errors.gstnoMsg = 'Please enter GST Number.';
             return false;
         }
 		if($scope.item.VatNo==null || $scope.item.VatNo=="" ){
+			$("#vatno").focus();
             $scope.vatnoError = true;
             $scope.errors.vatnoMsg = 'Please enter VAT Number.';
             return false;
         }
-
+console.log($scope.item);
 
 		angular.extend(record,$scope.item);
 				//record.name=undefined;
@@ -149,6 +154,8 @@ function ManufactureCtrl($scope, $http){
 		$scope.item.Country ='1';
 		$scope.item.State = null;
 		$scope.item.City = null;
+		$scope.item.GstNo = row.GSTIN; 
+		$scope.item.VatNo = row.VatNumber; 
 		loadData('get_State_list',{'id': row.CountryId}).success(function(data){$scope.StateList=data; $scope.item.State =row.StateId});
 		loadData('get_City_list',{'cId': row.CountryId,'sId':row.StateId}).success(function(data){$scope.CityList=data; $scope.item.City=row.CityId});
 
@@ -308,7 +315,7 @@ ManufactureCtrl.prototype.configureGrid=function($scope){
 
 };
 ManufactureCtrl.prototype.searchPopup=function($scope){
-	$scope.showForm=function(){$scope.fgShowHide=false; $scope.item={}; console.log('222'); };
+	$scope.showForm=function(){$scope.fgShowHide=false; $scope.item={};  };
 	
 	$scope.openSearchDialog=function(){		
 		$scope.searchDialog=true;

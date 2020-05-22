@@ -34,14 +34,14 @@ class Manufacture_ctrl extends base_ctrl {
 		$tmpdata['CompanyName']=$data->CompanyName;
 		$tmpdata['Address']=$data->Address;
 		$tmpdata['Landmark'] =$data->Landmark;
-		$tmpdata['Email']=$data->Email;
-		$tmpdata['MobileNumber']=$data->MobileNumber;
 		$tmpdata['Password']=$data->Password;
 		$tmpdata['CountryId']=$data->Country;
 		$tmpdata['StateId']=$data->State;
 		$tmpdata['CityId']=$data->City;
 		if(!isset($data->UserId))
 		{
+			$tmpdata['Email']=$data->Email;
+			$tmpdata['MobileNumber']=$data->MobileNumber;
 
 			$tmpdata['IsEmailVerify'] =1;
 			$tmpdata['IsMobileNumberVerify'] =1;
@@ -97,7 +97,12 @@ class Manufacture_ctrl extends base_ctrl {
 		}
 		else{
 			if($this->auth->IsUpdate){
-				$id=$this->model->update($data->PumpId, $data);
+
+				$id=$this->users->update($data->UserId, $tmpdata);
+				$mdata['GSTIN'] = $data->GstNo;
+				$mdata['VatNumber'] = $data->VatNo;
+
+				$updatemenu=$this->model->update($data->MenuId, $mdata);
 				$success=TRUE;
 				$msg='Data updated successfully';				
 			}		
