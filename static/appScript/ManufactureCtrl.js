@@ -6,7 +6,7 @@ function ManufactureCtrl($scope, $http){
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
 	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data;});
-	
+
 	//CRUD operation
 	$scope.saveItem=function(){	
 		var record={};
@@ -14,34 +14,46 @@ function ManufactureCtrl($scope, $http){
 		$scope.nameError =false;
 		console.log($scope.item);
 		if($scope.item==null || $scope.item=="" ){
+            $('#name').focus();
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter type name.';
             return false;
         }
 		if($scope.item.CompanyName==null || $scope.item.CompanyName=="" ){
+            $('#name').focus();
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter type name.';
             return false;
         }
 		if($scope.item.Email==null || $scope.item.Email=="" ){
+            $('#email').focus();
             $scope.emailError = true;
             $scope.errors.emailMsg = 'Please enter your email address.';
             return false;
         }
 		if($scope.item.Password==null || $scope.item.Password=="" ){
+            $('#password').focus();
             $scope.passwordError = true;
             $scope.errors.passwordMsg = 'Please enter password.';
             return false;
         }
 
-		if($scope.item.PhoneNo==null || $scope.item.PhoneNo=="" ){
-            $scope.phonenoError = true;
-            $scope.errors.phonenoMsg = 'Please enter Phone Number.';
+		if($scope.item.MobileNo==null || $scope.item.MobileNo=="" ){
+            $('#mobileno').focus();
+            $scope.mobileError = true;
+            $scope.errors.mobilenoMsg = 'Please enter Mobile Number.';
             return false;
         }
 		if($scope.item.Address==null || $scope.item.Address=="" ){
+            $('#address').focus();
             $scope.addressError = true;
             $scope.errors.addressMsg = 'Please enter Address.';
+            return false;
+        }
+		if($scope.item.Landmark==null || $scope.item.Landmark=="" ){
+            $('#landmark').focus();
+            $scope.landmarkError = true;
+            $scope.errors.landmarkMsg = 'Please enter Landmark.';
             return false;
         }
 		if($scope.item.Country==null || $scope.item.Country=="" ){
@@ -76,25 +88,65 @@ function ManufactureCtrl($scope, $http){
 
 		loadData('save',record).success(function(data){
 
-            $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
-                type: 'success',
-                delay: 2500,
-                allow_dismiss: true
-            });
+
+
 			//toastr.success(data.msg);
 			if(data.success){
 				loadGridData($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 				$scope.fgShowHide=true;			
-				$scope.item=null;
+				$scope.item={};
+				$("#baseimagename").attr('src','');
+	            $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
+	                type: 'success',
+	                delay: 2500,
+	                allow_dismiss: true
+	            });
+
+			}else{
+	            $.bootstrapGrowl('<h4>Warning!</h4> <p>'+data.msg+'</p>', {
+	                type: 'warning',
+	                delay: 2500,
+	                allow_dismiss: true
+	            });
+
 			}
 		});
 	};			
+	$scope.getStateList=function(){
+		console.log($scope.item.Country.CId);
+		if($scope.item.Country.CId ==null){
+            $scope.countryError = true;
+            $scope.errors.countryMsg = 'Please select Country.';
+            return false;
+        }
+	loadData('get_State_list',{'id': $scope.item.Country.CId}).success(function(data){$scope.StateList=data;});
+	};
+
+	$scope.getCityList=function(){
+		console.log($scope.item.State);
+		if($scope.item.Country.CId ==null && $scope.item.Country !=""){
+            $scope.countryError = true;
+            $scope.errors.countryMsg = 'Please select Country.';
+            return false;
+        }
+		if($scope.item.State==null && $scope.item.State !=""){
+            $scope.stateError = true;
+            $scope.errors.stateMsg = 'Please select State.';
+            return false;
+        }
+		loadData('get_City_list',{'cId': $scope.item.Country.CId,'sId':$scope.item.State}).success(function(data){$scope.CityList=data;});
+	};
+
+
 	$scope.editItem=function(row){	
 		console.log(row.entity);
 		$scope.item=row;
 		$scope.datatype='Edit';
 		console.log($scope.item);
+		$scope.item.Country =row.CountryId;
 		
+		$("#baseimagename").attr('src','uploads/menu/'+row.Image);
+
 		$scope.fgShowHide=false;				
 	};
 	$scope.viewItem=function(row){	
@@ -115,6 +167,18 @@ function ManufactureCtrl($scope, $http){
 			});
 		}
 	};
+	$scope.getfilename=function(file){
+
+ 		var reader = new FileReader();
+		reader.readAsDataURL(file.files[0]);
+		reader.onload = function (e) {
+			var data = e.target.result.replace(/^data:image\/\w+;base64,/, "");
+			$scope.item.baseimage =  e.target.result;//data;
+			$("#baseimagename").attr('src',$scope.item.baseimage);
+		}
+
+	}
+
 	$scope.changeItemStatus=function(row,status){
 			var data = {'id':row,'status':status};
 			loadData('changestatus',data).success(function(data){
@@ -208,7 +272,9 @@ function ManufactureCtrl($scope, $http){
 }
  ManufactureCtrl.prototype.init=function($scope){
 	$scope.search=null;
-	$scope.item=null;
+	$scope.item={};
+	$scope.item.State = "";
+	$scope.item.City = "";
 	$scope.list = null;
 	$scope.fgShowHide=true;
 	

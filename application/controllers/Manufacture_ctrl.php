@@ -4,8 +4,12 @@ require_once('./application/libraries/base_ctrl.php');
 class Manufacture_ctrl extends base_ctrl {
 	function __construct() {
 		parent::__construct();		
-	    $this->load->model('customer_model','model');
+	    $this->load->model('customer_model','customer');
+	    $this->load->model('users_model','users');
+	    $this->load->model('manufacture_model','model');
 	    $this->load->model('country_model','country');
+	    $this->load->model('state_model','state');
+	    $this->load->model('city_model','city');
 	}
 	public function index()
 	{
@@ -27,12 +31,65 @@ class Manufacture_ctrl extends base_ctrl {
 		$success=FALSE;
 		$msg= 'You are not permitted.';
 		$id=0;
-		$tmpdata['Name']=$data->Name;
-		$tmpdata['Status']='1';
-		if(!isset($data->CustId))
+		$tmpdata['CompanyName']=$data->CompanyName;
+		$tmpdata['Address']=$data->Address;
+		$tmpdata['Landmark'] =$data->Landmark;
+		$tmpdata['Email']=$data->Email;
+		$tmpdata['MobileNumber']=$data->MobileNumber;
+		$tmpdata['Password']=$data->Password;
+		$tmpdata['CountryId']=$data->Country->CId;
+		$tmpdata['StateId']=$data->State;
+		$tmpdata['CityId']=$data->City;
+		if(!isset($data->UserId))
 		{
+
+			$tmpdata['IsEmailVerify'] =1;
+			$tmpdata['IsMobileNumberVerify'] =1;
+			$tmpdata['Role'] =3;
+			$tmpdata['Type'] ='Normal';
+			$tmpdata['Status']='1';
+
+			if($this->users->checkEmail($tmpdata['Email'])){
+
+				$msg='Email Address Already Exists';
+				$success=FALSE;
+				print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
+				exit;
+
+			}
+			if($this->users->checkMobileNumber($tmpdata['MobileNumber'])){
+
+				$msg='Mobile Number Already Exists';
+				$success=FALSE;
+				print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
+				exit;
+
+			}
+
+			if(isset($data->baseimage) !=null){
+		 		$new_data=explode(",",$data->baseimage);
+		        $exten=explode('/',$new_data[0]);
+	            $exten1=explode(';',$exten[1]);
+	            $decoded=base64_decode($new_data[1]);
+	            $img_name='img_'.uniqid().'.'.$exten1[0];
+	            file_put_contents(APPPATH.'../uploads/menu/'.$img_name,$decoded);
+	            $tmpdata['Image']=$img_name;
+
+		        unset($data->baseimage);
+		        unset($data->image);
+	    	}
+
+
 			if($this->auth->IsInsert){
-				$id=$this->model->add($tmpdata);
+				$id=$this->users->add($tmpdata);
+
+				// Manufacture Data 
+				$mdata['UserId'] = $id;
+				$mdata['GSTIN'] = $data->GstNo;
+				$mdata['VatNumber'] = $data->VatNo;
+
+				$addmenu = $this->model->add($mdata);
+
 				$msg='Data inserted successfully';
 				$success=TRUE;
 			}
@@ -75,6 +132,14 @@ class Manufacture_ctrl extends base_ctrl {
 	}
 	public function get_Country_list(){
 		print  json_encode($this->country->get_all());
+	}
+	public function get_State_list(){
+		$data=$this->post();
+		print  json_encode($this->state->get_all_by_countryId($data->id));
+	}
+	public function get_City_list(){
+		$data=$this->post();
+		print  json_encode($this->city->get_all_by_countryId_stateId($data->cId,$data->sId));
 	}
 
 	

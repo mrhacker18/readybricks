@@ -85,6 +85,7 @@
     <script src="<?php echo base_url(); ?>static/js/demo_customizer.js?version=4.5.0"></script>
     <script src="<?php echo base_url(); ?>static/js/main.js?version=4.5.0"></script>
 
+    <script src="<?php echo base_url(); ?>static/js/jquery.bootstrap-growl.min.js"></script>
 
 
 

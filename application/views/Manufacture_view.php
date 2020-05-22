@@ -26,31 +26,39 @@
                         <thead>
                             <tr>
                                 <th>Company Name</th><th>Phone No</th><th>Email</th><th>Address</th><th>Status</th> 
-                                <th>Action</th>
+                                <th class="text-center" colspan="2">Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Name</th><th>Company Name</th><th>Phone No</th><th>Email</th><th>Address</th><th>Status</th> 
+                                <th>Company Name</th><th>Phone No</th><th>Email</th><th>Address</th><th>Status</th> <th class="text-center" colspan="2">Action</th> 
                             </tr>
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="item in list">
-                                <td>{{item.Name}}</td>
-                                <td>{{item.PhoneNo}}</td>
-                                <td>abc@gmail.com</td>
+                                <td>{{item.CompanyName}}</td>
+                                <td>{{item.MobileNumber}}</td>
+                                <td>{{item.Email}}</td>
                                 <td>{{item.Address}}</td>
                                 <td>
-                                    <a class="badge badge-danger" href="" ng-if="$index % 2 == 0">Deactive</a>
-                                    <a class="badge badge-success" href="" ng-if="$index % 2 != 0">Active</a>
-
+                                  <lable ng-show="item.Status == '1'" class="badge badge-success">Active</lable>
+                                  <lable ng-show="item.Status == '0'" class="badge badge-danger">Deactive</lable>
                                 </td>
                                 <td class="text-center">
-                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-danger" ng-if="$index % 2 != 0">Deactive</button> 
-                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-success" ng-if="$index % 2 == 0">Active</button>
-                                    <button class="ml-3 mb-2 btn btn-outline-info " ng-click="viewItem(item)" type="button">  <i class="os-icon os-icon-eye" style="margin-top: -3px;"></i></button>
-                                    <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i></button>
-                                    <button class=" mb-2 btn btn-outline-danger " ng-click="deleteItem(item)" type="button"> <i class="os-icon os-icon-ui-15" style="margin-top: -3px;"></i></button>
+
+                                  <button type="button" class="ml-3 mb-2 btn  btn-xs btn-success" ng-show="item.Status == '0'" ng-click="changeItemStatus(item.UserId,1)">Active</button>
+                                  <button type="button" class="ml-3 mb-2 btn  btn-xs btn-danger" ng-show="item.Status == '1'" ng-click="changeItemStatus(item.UserId,0)">Deactive</button>
+                                </td>
+                                <td class="text-center">
+                                  <button class="ml-3 mb-2 btn btn-outline-info " ng-click="viewItem(item)" type="button">  
+                                    <i class="os-icon os-icon-eye" style="margin-top: -3px;"></i>
+                                  </button>
+                                  <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  
+                                    <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i>
+                                  </button>
+                                  <button class=" mb-2 btn btn-outline-danger " ng-click="deleteItem(item.UserId)" type="button"> 
+                                    <i class="os-icon os-icon-ui-15" style="margin-top: -3px;"></i>
+                                  </button>
                                 </td>
                             </tr>
                             <tr ng-show="list.length ==0"><td colspan="10" class="text-center">Customer Not found</td></tr>
@@ -77,8 +85,7 @@
 
 
 
-ng-show="" !fgShowHide && !viewProfileDetailstyle="display:none"
-<div  >
+<div  ng-show="!fgShowHide && !viewProfileDetail" style="display:none">
     <div class="element-wrapper">
                 <h6 class="element-header">{{datatype}} Manufacture</h6>
                 <div class="element-box"><div class="form-desc"><button type="button"  ng-click="hideForm()" class="btn btn-success" ><i class="icon-plus icon-white"></i><b> Back </b></button></div>
@@ -100,42 +107,54 @@ ng-show="" !fgShowHide && !viewProfileDetailstyle="display:none"
             <input type="text" name="password" id="password" ng-model="item.Password"  class="form-control" placeholder="Password" ng-focus="hideErrorMsg('passwordError')">
             <span ng-show="passwordError" ng-bind="errors.passwordMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="phonenoError ? 'has-danger':''">
-            <label>Phone No.</label>
-            <input type="text" name="phoneno" id="phoneno" ng-model="item.PhoneNo"  class="form-control" placeholder="Email Address" ng-focus="hideErrorMsg('phonenoError')">
-            <span ng-show="phonenoError" ng-bind="errors.phonenoMsg" class="help-block form-text text-muted form-control-feedback"></span>
+        <div class="form-group" ng-class="mobilenumberError ? 'has-danger':''">
+            <label>Mobile No.</label>
+            <input type="text" name="mobilenumber" id="mobilenumber" ng-model="item.MobileNumber"  class="form-control" placeholder="Mobile Number" ng-focus="hideErrorMsg('mobilenumberError')">
+            <span ng-show="mobilenumberError" ng-bind="errors.mobilenumberMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="addressError ? 'has-danger':''">
             <label>Address</label>
             <textarea name="address" id="address" ng-model="item.Address"  class="form-control" placeholder="Address" ng-focus="hideErrorMsg('addressError')" rows="5"></textarea>
             <span ng-show="addressError" ng-bind="errors.addressMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
+        <div class="form-group" ng-class="landmarkError ? 'has-danger':''">
+            <label>Landmark</label>
+            <textarea name="landmark" id="landmark" ng-model="item.Landmark"  class="form-control" placeholder="Landmark" ng-focus="hideErrorMsg('landmarkError')" rows="5"></textarea>
+            <span ng-show="addressError" ng-bind="errors.landmarkMsg" class="help-block form-text text-muted form-control-feedback"></span>
+        </div>
         <div class="form-group" ng-class="countryError ? 'has-danger':''">
             <label>Select Country</label>
-            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')" ng-options="obj.CName for obj in CountryList track by obj.CId" class="form-control">
-                <option selected>Select Country</option>
+            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')"  class="form-control" ng-change="getStateList()">
+                <option value="" selected>Select Country</option>
+                <option  ng-repeat="country in CountryList" value="{{country.CId}}">{{country.CName}}</option>
+
             </select>
             <span ng-show="countryError" ng-bind="errors.countryMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="stateError ? 'has-danger':''">
             <label>Select State</label>
-            <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')">
-                <option selected>Select State</option>
+            <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')"  class="form-control" ng-change="getCityList()">
+                <option value="" selected>Select State</option>
+                <option  ng-repeat="state in StateList" value="{{state.StateId}}">{{state.SName}}</option>
             </select>
             <span ng-show="stateError" ng-bind="errors.stateMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="cityError ? 'has-danger':''">
             <label>Select City</label>
             <select name="city" id="city" ng-model="item.City"  class="form-control" ng-focus="hideErrorMsg('cityError')">
-                <option selected>Select City</option>
+                <option value="" selected>Select City</option>
+                <option  ng-repeat="city in CityList" value="{{city.CityId}}">{{city.CName}}</option>
             </select>
             <span ng-show="cityError" ng-bind="errors.cityMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="fileError ? 'has-danger':''">
             <label>Upload Logo</label>
             <br/>
-            <input type="file" name="logo" id="logo" ng-model="item.Logo"  ng-focus="hideErrorMsg('gstnoError')">
-            <span ng-show="gstnoError" ng-bind="errors.gstnoMsg" class="help-block form-text text-muted form-control-feedback"></span>
+            <input type="file" name="logo" id="logo" ng-model="item.Logo"  ng-focus="hideErrorMsg('fileError')"  onchange="angular.element(this).scope().getfilename(this)">
+             
+              <img  id="baseimagename"  width="100px" height="80px">
+
+            <span ng-show="fileError" ng-bind="errors.fileMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="gstnoError ? 'has-danger':''">
             <label>GST No.</label>

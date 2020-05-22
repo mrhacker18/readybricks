@@ -11,6 +11,10 @@ class City_model extends CI_Model
     {
 		return $this->db->get($this->table)->result();		
     }
+    public function get_all_by_countryId_stateId($cId,$sId)
+    {
+		return $this->db->where('CCountryId',$cId)->where('CStateId',$sId)->get($this->table)->result();		
+    }
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)

@@ -11,8 +11,9 @@ class Manufacture_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('CustId,Name,PhoneNo,AltPhoneNo,Address,Date,Status');
-			
+			->select('users.*,manufacture.GSTIN,manufacture.VatNumber')
+		 	->join('users', 'users.UserId = manufacture.UserId', 'inner')
+		 	->group_by('UserId');
 		$data=$this->db->get($this->table)->result();
 		$total=$this->count_all();
 		return array("data"=>$data, "total"=>$total);
@@ -58,17 +59,18 @@ class Manufacture_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('CustId', $id)->update($this->table, $data);
+        return $this->db->where('UserId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
     {
-        $this->db->where('CustId', $id)->delete($this->table);
+    	$this->db->where('UserId',$id)->delete($this->table);
+        $this->db->where('UserId', $id)->delete('users');
         return $this->db->affected_rows();
     }
     public function changestatus($id, $data)
     {
-        return $this->db->where('CustId', $id)->update($this->table, $data);
+        return $this->db->where('UserId', $id)->update('users', $data);
     }
 
     public function getmobile($mobile)
@@ -76,18 +78,6 @@ class Manufacture_model extends CI_Model
         return $this->db->where('PhoneNo', $mobile)->get($this->table)->row();
     }
 
-	public function searchcustomer($params){
-	$this->db->select('customer.CustId,customer.Name,customer.PhoneNo,customer.AltPhoneNo,customer.Address as OrderAddress,orders.SerialNo')
-	->join('orders', 'orders.OCustId = CustId', 'inner');
-	$this->db->where("Name LIKE '%$params->search%' OR PhoneNo LIKE '%$params->search%' OR customer.Address LIKE '%$params->search%' OR orders.SerialNo LIKE '%$params->search%'");
-		$this->db->where('orders.Status !=', '4');
-
-	$this->db->group_by('customer.CustId');
-	$data=$this->db->get($this->table)->result();
-
-	return $data;
-//				$this->db->like("catName",$params->search);
-	}
 	
 }
 
