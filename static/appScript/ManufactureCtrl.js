@@ -5,7 +5,7 @@ function ManufactureCtrl($scope, $http){
 	
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
-	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data;});
+	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data; $scope.item.Country=null;});
 
 	//CRUD operation
 	$scope.saveItem=function(){	
@@ -113,18 +113,21 @@ function ManufactureCtrl($scope, $http){
 		});
 	};			
 	$scope.getStateList=function(){
-		console.log($scope.item.Country.CId);
-		if($scope.item.Country.CId ==null){
+		console.log($scope.item.Country);
+			$scope.errors = {};
+
+		if($scope.item.Country ==null || $scope.item.Country ==''){
             $scope.countryError = true;
             $scope.errors.countryMsg = 'Please select Country.';
             return false;
         }
-	loadData('get_State_list',{'id': $scope.item.Country.CId}).success(function(data){$scope.StateList=data;});
+	loadData('get_State_list',{'id': $scope.item.Country}).success(function(data){$scope.StateList=data; $scope.item.State =null});
 	};
 
 	$scope.getCityList=function(){
 		console.log($scope.item.State);
-		if($scope.item.Country.CId ==null && $scope.item.Country !=""){
+		$scope.errors = {};
+		if($scope.item.Country ==null || $scope.item.Country ==""){
             $scope.countryError = true;
             $scope.errors.countryMsg = 'Please select Country.';
             return false;
@@ -134,7 +137,7 @@ function ManufactureCtrl($scope, $http){
             $scope.errors.stateMsg = 'Please select State.';
             return false;
         }
-		loadData('get_City_list',{'cId': $scope.item.Country.CId,'sId':$scope.item.State}).success(function(data){$scope.CityList=data;});
+		loadData('get_City_list',{'cId': $scope.item.Country,'sId':$scope.item.State}).success(function(data){$scope.CityList=data; $scope.item.City=null});
 	};
 
 
@@ -143,8 +146,12 @@ function ManufactureCtrl($scope, $http){
 		$scope.item=row;
 		$scope.datatype='Edit';
 		console.log($scope.item);
-		$scope.item.Country =row.CountryId;
-		
+		$scope.item.Country ='1';
+		$scope.item.State = null;
+		$scope.item.City = null;
+		loadData('get_State_list',{'id': row.CountryId}).success(function(data){$scope.StateList=data; $scope.item.State =row.StateId});
+		loadData('get_City_list',{'cId': row.CountryId,'sId':row.StateId}).success(function(data){$scope.CityList=data; $scope.item.City=row.CityId});
+
 		$("#baseimagename").attr('src','uploads/menu/'+row.Image);
 
 		$scope.fgShowHide=false;				
@@ -231,6 +238,7 @@ function ManufactureCtrl($scope, $http){
 	    }
     return rangeWithDots;
   }
+	$scope.hideForm=function(){$scope.fgShowHide=true;  $scope.viewProfileDetail = false; $scope.datatype='Add'; $scope.item= {}; $scope.item.Country=null;  $scope.StateList=[];$scope.CityList=[];};
 
 	
 	//Utility functions
@@ -269,12 +277,14 @@ function ManufactureCtrl($scope, $http){
 		}
 		return source;
 	}
+
 }
  ManufactureCtrl.prototype.init=function($scope){
 	$scope.search=null;
 	$scope.item={};
-	$scope.item.State = "";
-	$scope.item.City = "";
+	$scope.item.Country = null;
+	$scope.item.State = null;
+	$scope.item.City = null;
 	$scope.list = null;
 	$scope.fgShowHide=true;
 	
@@ -298,9 +308,8 @@ ManufactureCtrl.prototype.configureGrid=function($scope){
 
 };
 ManufactureCtrl.prototype.searchPopup=function($scope){
-	$scope.showForm=function(){$scope.fgShowHide=false; $scope.item=null;};
+	$scope.showForm=function(){$scope.fgShowHide=false; $scope.item={}; console.log('222'); };
 	
-	$scope.hideForm=function(){$scope.fgShowHide=true;  $scope.viewProfileDetail = false; $scope.datatype='Add';};
 	$scope.openSearchDialog=function(){		
 		$scope.searchDialog=true;
 	};

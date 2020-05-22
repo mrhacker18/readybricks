@@ -37,7 +37,7 @@ class Manufacture_ctrl extends base_ctrl {
 		$tmpdata['Email']=$data->Email;
 		$tmpdata['MobileNumber']=$data->MobileNumber;
 		$tmpdata['Password']=$data->Password;
-		$tmpdata['CountryId']=$data->Country->CId;
+		$tmpdata['CountryId']=$data->Country;
 		$tmpdata['StateId']=$data->State;
 		$tmpdata['CityId']=$data->City;
 		if(!isset($data->UserId))

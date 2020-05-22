@@ -99,7 +99,7 @@
         </div>
         <div class="form-group" ng-class="emailError ? 'has-danger':''">
             <label>Email Address</label>
-            <input type="text" name="email" id="email" ng-model="item.Email"  class="form-control" placeholder="Email Address" ng-focus="hideErrorMsg('emailError')">
+            <input type="text" name="email" id="email" ng-model="item.Email" ng-disabled="item.UserId !=null"  class="form-control" placeholder="Email Address" ng-focus="hideErrorMsg('emailError')">
             <span ng-show="emailError" ng-bind="errors.emailMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="passwordError ? 'has-danger':''">
@@ -109,7 +109,7 @@
         </div>
         <div class="form-group" ng-class="mobilenumberError ? 'has-danger':''">
             <label>Mobile No.</label>
-            <input type="text" name="mobilenumber" id="mobilenumber" ng-model="item.MobileNumber"  class="form-control" placeholder="Mobile Number" ng-focus="hideErrorMsg('mobilenumberError')">
+            <input type="text" name="mobilenumber" id="mobilenumber" ng-model="item.MobileNumber" ng-disabled="item.UserId !=null" class="form-control" placeholder="Mobile Number" ng-focus="hideErrorMsg('mobilenumberError')">
             <span ng-show="mobilenumberError" ng-bind="errors.mobilenumberMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="addressError ? 'has-danger':''">
@@ -124,9 +124,9 @@
         </div>
         <div class="form-group" ng-class="countryError ? 'has-danger':''">
             <label>Select Country</label>
-            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')"  class="form-control" ng-change="getStateList()">
-                <option value="" selected>Select Country</option>
-                <option  ng-repeat="country in CountryList" value="{{country.CId}}">{{country.CName}}</option>
+            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')"  class="form-control" ng-change="getStateList()" >
+                <option value="null">Select Country</option>
+                <option  ng-repeat="country in CountryList" value="{{country.CId}}" ng-selected="item.CountryId == country.CId">{{country.CName}}</option>
 
             </select>
             <span ng-show="countryError" ng-bind="errors.countryMsg" class="help-block form-text text-muted form-control-feedback"></span>
@@ -134,16 +134,16 @@
         <div class="form-group" ng-class="stateError ? 'has-danger':''">
             <label>Select State</label>
             <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')"  class="form-control" ng-change="getCityList()">
-                <option value="" selected>Select State</option>
-                <option  ng-repeat="state in StateList" value="{{state.StateId}}">{{state.SName}}</option>
+                <option value="null"  >Select State</option>
+                <option  ng-repeat="state in StateList" value="{{state.StateId}}" ng-selected="item.StateId == state.StateId">{{state.SName}}</option>
             </select>
             <span ng-show="stateError" ng-bind="errors.stateMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
         <div class="form-group" ng-class="cityError ? 'has-danger':''">
             <label>Select City</label>
             <select name="city" id="city" ng-model="item.City"  class="form-control" ng-focus="hideErrorMsg('cityError')">
-                <option value="" selected>Select City</option>
-                <option  ng-repeat="city in CityList" value="{{city.CityId}}">{{city.CName}}</option>
+                <option value="null" selected>Select City</option>
+                <option  ng-repeat="city in CityList" value="{{city.CityId}}" ng-selected="item.CityId == city.CityId">{{city.CName}}</option>
             </select>
             <span ng-show="cityError" ng-bind="errors.cityMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
