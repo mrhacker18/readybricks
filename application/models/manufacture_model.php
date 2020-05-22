@@ -70,6 +70,7 @@ class Manufacture_model extends CI_Model
     {
         return $this->db->where('CustId', $id)->update($this->table, $data);
     }
+
     public function getmobile($mobile)
     {
         return $this->db->where('PhoneNo', $mobile)->get($this->table)->row();

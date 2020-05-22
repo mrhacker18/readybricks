@@ -5,6 +5,7 @@ function ManufactureCtrl($scope, $http){
 	
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
+	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data;});
 	
 	//CRUD operation
 	$scope.saveItem=function(){	
@@ -17,11 +18,59 @@ function ManufactureCtrl($scope, $http){
             $scope.errors.nameMsg = 'Please enter type name.';
             return false;
         }
-		if($scope.item.Name==null || $scope.item.Name=="" ){
+		if($scope.item.CompanyName==null || $scope.item.CompanyName=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter type name.';
             return false;
         }
+		if($scope.item.Email==null || $scope.item.Email=="" ){
+            $scope.emailError = true;
+            $scope.errors.emailMsg = 'Please enter your email address.';
+            return false;
+        }
+		if($scope.item.Password==null || $scope.item.Password=="" ){
+            $scope.passwordError = true;
+            $scope.errors.passwordMsg = 'Please enter password.';
+            return false;
+        }
+
+		if($scope.item.PhoneNo==null || $scope.item.PhoneNo=="" ){
+            $scope.phonenoError = true;
+            $scope.errors.phonenoMsg = 'Please enter Phone Number.';
+            return false;
+        }
+		if($scope.item.Address==null || $scope.item.Address=="" ){
+            $scope.addressError = true;
+            $scope.errors.addressMsg = 'Please enter Address.';
+            return false;
+        }
+		if($scope.item.Country==null || $scope.item.Country=="" ){
+            $scope.countryError = true;
+            $scope.errors.countryMsg = 'Please select Country.';
+            return false;
+        }
+		if($scope.item.State==null || $scope.item.State=="" ){
+            $scope.stateError = true;
+            $scope.errors.stateMsg = 'Please select State.';
+            return false;
+        }
+		if($scope.item.City==null || $scope.item.City=="" ){
+            $scope.cityError = true;
+            $scope.errors.cityMsg = 'Please select city.';
+            return false;
+        }
+		if($scope.item.GstNo==null || $scope.item.GstNo=="" ){
+            $scope.gstnoError = true;
+            $scope.errors.gstnoMsg = 'Please enter GST Number.';
+            return false;
+        }
+		if($scope.item.VatNo==null || $scope.item.VatNo=="" ){
+            $scope.vatnoError = true;
+            $scope.errors.vatnoMsg = 'Please enter VAT Number.';
+            return false;
+        }
+
+
 		angular.extend(record,$scope.item);
 				//record.name=undefined;
 

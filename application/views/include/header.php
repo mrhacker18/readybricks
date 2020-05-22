@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
-    <title>Admin Dashboard HTML Template</title>
+    <title>Ready Bricks - Admin Panel</title>
     <meta charset="utf-8">
     <base href="<?php echo base_url(); ?>">
     <meta name="robots" content="noindex, nofollow">

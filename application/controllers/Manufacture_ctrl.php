@@ -5,6 +5,7 @@ class Manufacture_ctrl extends base_ctrl {
 	function __construct() {
 		parent::__construct();		
 	    $this->load->model('customer_model','model');
+	    $this->load->model('country_model','country');
 	}
 	public function index()
 	{
@@ -72,6 +73,10 @@ class Manufacture_ctrl extends base_ctrl {
 	public function get_Navigations_list(){
 		print  json_encode($this->model->get_Navigations_list());
 	}
+	public function get_Country_list(){
+		print  json_encode($this->country->get_all());
+	}
+
 	
 	public function get()
 	{	

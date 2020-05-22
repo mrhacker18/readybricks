@@ -12,6 +12,10 @@ class Api extends CI_Controller {
         $this->load->model('Customer_model');
         $this->load->model('Manufacture_model');
         $this->load->model('Transporter_model');
+        $this->load->model('Country_model');
+        $this->load->model('State_model');
+        $this->load->model('City_model');
+
 
         $this->load->model('Models_model');
         $this->load->model('Pump_model');
@@ -43,15 +47,24 @@ class Api extends CI_Controller {
         $post=json_decode( file_get_contents('php://input') );
          $Role          = $post->Role;
          $Type          = $post->Type;
-         $CompanyName   = $post->CompanyName;
-         $FirstName     = $post->FirstName;
-         $LastName      = $post->LastName;
-         $MobileNumber  = $post->MobileNumber;
-         $Address       = $post->Address;
+         $CompanyName   = isset($post->CompanyName) ? $post->CompanyName : '';
+         $FirstName     = isset($post->FirstName) ? $post->FirstName : '';
+         $LastName      = isset($post->LastName) ? $post->LastName : '';
          $Email         = $post->Email;
-         $Password      = $post->Password;
-         $VatNo         = isset($post->GstNo) ? $post->GstNo : '';
+         $MobileNumber  = $post->MobileNumber;
+         $VatNo         = isset($post->VatNo) ? $post->VatNo : '';
          $GstNo         = isset($post->GstNo) ? $post->GstNo : '';
+         $Image         = '';
+         $Password      = $post->Password;
+
+         if(isset($post->Image) && $post->Image !=""){
+            $new_data=explode(",",$post->Image);
+            $exten=explode('/',$new_data[0]);
+            $exten1=explode(';',$exten[1]);
+            $decoded=base64_decode($new_data[1]);
+            $Image='img_'.uniqid().'.'.$exten1[0];
+            file_put_contents(APPPATH.'../uploads/'.$Image,$decoded);
+         }
 
             $checkEmail=$this->Users_model->checkEmail($Email);
            if(!$checkEmail){
@@ -60,7 +73,7 @@ class Api extends CI_Controller {
 
                    if(!$checkMobileNumber){
 
-                        $addUser=$this->Users_model->add(array('CompanyName'=>$CompanyName,'FirstName'=>$FirstName,'LastName'=>$LastName,'Email'=>$Email,'Password'=>md5($Password),'Address'=>$Address,'MobileNumber'=>$MobileNumber,'IsEmailVerify'=>'1','IsMobileNumberVerify'=>'1','Role'=>$Role,'Type'=>'Normal','Status'=>'1'));;
+                        $addUser=$this->Users_model->add(array('CompanyName'=>$CompanyName,'FirstName'=>$FirstName,'LastName'=>$LastName,'Email'=>$Email,'Password'=>md5($Password),'Image'=>$Image,'MobileNumber'=>$MobileNumber,'IsEmailVerify'=>'1','IsMobileNumberVerify'=>'1','Role'=>$Role,'Status'=>'0'));
 
                         if($Role ==2){
                             $addCustomer = $this->Customer_model->add(array('UserId'=>$addUser,'GSTIN'=>$GstNo,'VatNumber'=>$VatNo));;
@@ -71,20 +84,40 @@ class Api extends CI_Controller {
                         if($Role ==4){
                             $addTransporter = $this->Transporter_model->add(array('UserId'=>$addUser,'GSTIN'=>$GstNo,'VatNumber'=>$VatNo));;
                         }
-                        print json_encode(array('success'=>1, 'msg'=>'Signup successful','data'=>$addUser));
+                        print json_encode(array('success'=>1, 'msg'=>'Signup step2 successful','data'=>$addUser));
 
                     }else{
 
-                    print json_encode(array('success'=>0, 'msg'=>'Mobile Number Already Exists'));
+                    print json_encode(array('success'=>3, 'msg'=>'Mobile Number Already Exists'));
 
                     }
 
             }else{
-                        print json_encode(array('success'=>0, 'msg'=>'Email Already Exists'));
+                        print json_encode(array('success'=>2, 'msg'=>'Email Already Exists'));
 
             }            
 
         exit;
+    }
+
+    public function signup3(){
+
+         $post      =json_decode( file_get_contents('php://input') );
+         $Address   = $post->Address;
+         $Landmark  = isset($post->Landmark) ? $post->Landmark : '';
+         $CountryId = $post->CountryId;
+         $StateId   = $post->StateId;
+         $CityId    = $post->CityId;
+         $UserId    = $post->UserId;
+
+            $updateUser=$this->Users_model->update($UserId,array('Address'=>$Address,'Landmark'=>$Landmark,'CountryId'=>$CountryId,'StateId'=>$StateId,'CityId'=>$CityId,'Status'=>'1'));
+            if($updateUser){
+                print json_encode(array('success'=>1, 'msg'=>'Signup successful','data'=>$updateUser));
+            }else{
+                print json_encode(array('success'=>0, 'msg'=>'Something Wrong'));
+            }
+
+
     }
 
 
@@ -133,6 +166,19 @@ class Api extends CI_Controller {
 
     }
     function getallddl(){
+        $getCountry=$this->Country_model->get_all();
+        $getState=$this->State_model->get_all();
+        $getCity=$this->City_model->get_all();
+
+        print json_encode(array('success'=>'true', 'msg'=>'Record Found Successfully','country'=>$getCountry,'State'=>$getState,'city'=>$getCity));
+
+
+
+    }
+
+
+
+    function getallddl1(){
         $getemployee=$this->Users_model->get_all_employee();
         $getmodels=$this->Models_model->get_all();
         $getpump=$this->Pump_model->get_all();

@@ -92,12 +92,12 @@ class Users_model extends CI_Model
     }
     public function checkEmail($email)
     {
-        return $this->db->where('Email',$email)->get($this->table)->row();
+        return $this->db->where('Email',$email)->where('Status','1')->get($this->table)->row();
     }
 
     public function checkMobileNumber($MobileNumber)
     {
-        return $this->db->where("MobileNumber",$MobileNumber)->get($this->table)->row();
+        return $this->db->where("MobileNumber",$MobileNumber)->where('Status','1')->get($this->table)->row();
     }
 
     public function checklogin($email)

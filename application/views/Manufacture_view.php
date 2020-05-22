@@ -77,72 +77,72 @@
 
 
 
-
-<div ng-show="!fgShowHide && !viewProfileDetail" style="display:none">
+ng-show="" !fgShowHide && !viewProfileDetailstyle="display:none"
+<div  >
     <div class="element-wrapper">
                 <h6 class="element-header">{{datatype}} Manufacture</h6>
                 <div class="element-box"><div class="form-desc"><button type="button"  ng-click="hideForm()" class="btn btn-success" ><i class="icon-plus icon-white"></i><b> Back </b></button></div>
     <!-- END Form Elements Title -->
     <form action="#"  name="myForm" method="post" enctype="multipart/form-data"  onsubmit="return false;">
 
-        <div class="form-group" ng-class="nameError ? 'has-error':''">
+        <div class="form-group" ng-class="nameError ? 'has-danger':''">
             <label>Company Name</label>
             <input type="text" name="name" id="name" ng-model="item.CompanyName"  class="form-control" placeholder="Name" ng-focus="hideErrorMsg('nameError')">
-            <span ng-show="nameError" ng-bind="errors.nameMsg" class="help-block"></span>
+            <span ng-show="nameError" ng-bind="errors.nameMsg" class="form-text with-errors "></span>
         </div>
-        <div class="form-group" ng-class="emailError ? 'has-error':''">
+        <div class="form-group" ng-class="emailError ? 'has-danger':''">
             <label>Email Address</label>
             <input type="text" name="email" id="email" ng-model="item.Email"  class="form-control" placeholder="Email Address" ng-focus="hideErrorMsg('emailError')">
-            <span ng-show="nameError" ng-bind="errors.emailMsg" class="help-block form-text text-muted form-control-feedback"></span>
+            <span ng-show="emailError" ng-bind="errors.emailMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="passwordError ? 'has-error':''">
+        <div class="form-group" ng-class="passwordError ? 'has-danger':''">
             <label>Password</label>
             <input type="text" name="password" id="password" ng-model="item.Password"  class="form-control" placeholder="Password" ng-focus="hideErrorMsg('passwordError')">
             <span ng-show="passwordError" ng-bind="errors.passwordMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="phonenoError ? 'has-error':''">
+        <div class="form-group" ng-class="phonenoError ? 'has-danger':''">
             <label>Phone No.</label>
             <input type="text" name="phoneno" id="phoneno" ng-model="item.PhoneNo"  class="form-control" placeholder="Email Address" ng-focus="hideErrorMsg('phonenoError')">
             <span ng-show="phonenoError" ng-bind="errors.phonenoMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="addressError ? 'has-error':''">
+        <div class="form-group" ng-class="addressError ? 'has-danger':''">
             <label>Address</label>
             <textarea name="address" id="address" ng-model="item.Address"  class="form-control" placeholder="Address" ng-focus="hideErrorMsg('addressError')" rows="5"></textarea>
             <span ng-show="addressError" ng-bind="errors.addressMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="countryError ? 'has-error':''">
+        <div class="form-group" ng-class="countryError ? 'has-danger':''">
             <label>Select Country</label>
-            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')">
+            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')" ng-options="obj.CName for obj in CountryList track by obj.CId" class="form-control">
                 <option selected>Select Country</option>
             </select>
             <span ng-show="countryError" ng-bind="errors.countryMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="stateError ? 'has-error':''">
+        <div class="form-group" ng-class="stateError ? 'has-danger':''">
             <label>Select State</label>
             <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')">
                 <option selected>Select State</option>
             </select>
             <span ng-show="stateError" ng-bind="errors.stateMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="cityError ? 'has-error':''">
+        <div class="form-group" ng-class="cityError ? 'has-danger':''">
             <label>Select City</label>
             <select name="city" id="city" ng-model="item.City"  class="form-control" ng-focus="hideErrorMsg('cityError')">
                 <option selected>Select City</option>
             </select>
             <span ng-show="cityError" ng-bind="errors.cityMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="fileError ? 'has-error':''">
+        <div class="form-group" ng-class="fileError ? 'has-danger':''">
             <label>Upload Logo</label>
             <br/>
             <input type="file" name="logo" id="logo" ng-model="item.Logo"  ng-focus="hideErrorMsg('gstnoError')">
             <span ng-show="gstnoError" ng-bind="errors.gstnoMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="gstnoError ? 'has-error':''">
+        <div class="form-group" ng-class="gstnoError ? 'has-danger':''">
             <label>GST No.</label>
             <input type="text" name="gstno" id="gstno" ng-model="item.GstNo"  class="form-control" placeholder="GST No." ng-focus="hideErrorMsg('gstnoError')">
             <span ng-show="gstnoError" ng-bind="errors.gstnoMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
-        <div class="form-group" ng-class="vatnoError ? 'has-error':''">
+        <div class="form-group" ng-class="vatnoError ? 'has-danger':''">
             <label>VAT No.</label>
             <input type="text" name="vatno" id="vatno" ng-model="item.VatNo"  class="form-control" placeholder="VAT No." ng-focus="hideErrorMsg('vatnoError')">
             <span ng-show="vatnoError" ng-bind="errors.vatnoMsg" class="help-block form-text text-muted form-control-feedback"></span>
