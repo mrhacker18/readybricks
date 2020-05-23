@@ -34,7 +34,7 @@ class Manufacture_ctrl extends base_ctrl {
 		$tmpdata['CompanyName']=$data->CompanyName;
 		$tmpdata['Address']=$data->Address;
 		$tmpdata['Landmark'] =$data->Landmark;
-		$tmpdata['Password']=$data->Password;
+		$tmpdata['Password']=md5($data->Password);
 		$tmpdata['CountryId']=$data->Country;
 		$tmpdata['StateId']=$data->State;
 		$tmpdata['CityId']=$data->City;
