@@ -11,26 +11,33 @@ function CountryCtrl($scope, $http){
 		var record={};
 		$scope.errors = {};
 		$scope.nameError =false;
-		if($scope.country==null || $scope.country=="" ){
+		if($scope.item==null || $scope.item=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter country name.';
             return false;
         }
-		if($scope.country.name==null || $scope.country.name=="" ){
+		if($scope.item.CountryName==null || $scope.item.CountryName=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter country name.';
             return false;
         }
-		angular.extend(record,$scope.country);
+		angular.extend(record,$scope.item);
 				//record.name=undefined;
 
 		loadData('save',record).success(function(data){
-
-            $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
-                type: 'success',
-                delay: 2500,
-                allow_dismiss: true
-            });
+			if(data.success){
+				$.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
+					type: 'success',
+					delay: 2500,
+					allow_dismiss: true
+				});
+			}else{
+				$.bootstrapGrowl('<h4>Warning!</h4> <p>'+data.msg+'</p>', {
+					type: 'warning',
+					delay: 2500,
+					allow_dismiss: true
+				});
+			}
 			//toastr.success(data.msg);
 			if(data.success){
 				loadGridData($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
@@ -40,7 +47,10 @@ function CountryCtrl($scope, $http){
 		});
 	};			
 	$scope.editItem=function(row){	
-		$scope.item=row.entity;
+		console.log(row);
+		$scope.item=row;
+		$scope.item.CountryName =row.CName;
+		// $scope.item=row.entity;
 		
 		$scope.fgShowHide=false;				
 	};

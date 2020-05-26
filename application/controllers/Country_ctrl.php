@@ -4,7 +4,7 @@ require_once('./application/libraries/base_ctrl.php');
 class Country_ctrl extends base_ctrl {
 	function __construct() {
 		parent::__construct();		
-	    $this->load->model('Category_model','model');
+	    $this->load->model('Country_model','model');
 	}
 	public function index()
 	{
@@ -26,22 +26,32 @@ class Country_ctrl extends base_ctrl {
 		$success=FALSE;
 		$msg= 'You are not permitted.';
 		$id=0;
-		$tmpdata['catName']=$data->name;
-		$tmpdata['catStatus']='1';
-		if(!isset($data->RoleId))
+		$tmpdata['CName']=$data->CountryName;
+		$tmpdata['CStatus']='1';
+		if(!isset($data->CId))
 		{
 			if($this->auth->IsInsert){
-				$id=$this->model->add($tmpdata);
-				$msg='Data inserted successfully';
-				$success=TRUE;
+				if($this->model->checkName($data->CountryName)){
+					$msg='Data Already Exist';
+					$success=FALSE;
+				}else{
+					$id=$this->model->add($tmpdata);
+					$msg='Data inserted successfully';
+					$success=TRUE;
+				}
 			}
 					
 		}
 		else{
 			if($this->auth->IsUpdate){
-				$id=$this->model->update($data->RoleId, $data);
-				$success=TRUE;
-				$msg='Data updated successfully';				
+				if($this->model->checkName($data->CountryName,$data->CId)){
+					$msg='Data Already Exist';
+					$success=FALSE;
+				}else{
+					$id=$this->model->update($data->CId, $tmpdata);
+					$success=TRUE;
+					$msg='Data updated successfully';	
+				}			
 			}		
 		}
 		print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
@@ -52,7 +62,7 @@ class Country_ctrl extends base_ctrl {
 		if($this->auth->IsDelete){
 			$data=$this->post();
 
-			print json_encode( array("success"=>TRUE,"msg"=>$this->model->delete($data->id)));
+			print json_encode( array("success"=>TRUE,"msg"=>$this->model->delete($data->id->CId)));
 		}
 		else{
 			print json_encode( array("success"=>FALSE,"msg"=>"You are not permitted"));

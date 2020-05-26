@@ -4,46 +4,60 @@ function CityCtrl($scope, $http){
 	this.init($scope);	
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
+	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data; $scope.item.Country=null;});
 	
 	//CRUD operation
 	$scope.saveItem=function(){	
 		var record={};
 		$scope.errors = {};
 		$scope.nameError =false;
-		if($scope.city==null || $scope.city=="" ){
+		if($scope.item==null || $scope.item=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter city name.';
             return false;
         }
-		if($scope.city.name==null || $scope.city.name=="" ){
+		if($scope.item.Name==null || $scope.item.Name=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter city name.';
             return false;
-        }
-		angular.extend(record,$scope.city);
+		}
+		console.log($scope.item);
+		angular.extend(record,$scope.item);
 				//record.name=undefined;
 
 		loadData('save',record).success(function(data){
-
-            $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
-                type: 'success',
-                delay: 2500,
-                allow_dismiss: true
-            });
-			//toastr.success(data.msg);
 			if(data.success){
 				loadGridData($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+				$.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
+					type: 'success',
+					delay: 2500,
+					allow_dismiss: true
+				});
+				//toastr.success(data.msg);
+				
+			}else{
+	            $.bootstrapGrowl('<h4>Warning!</h4> <p>'+data.msg+'</p>', {
+	                type: 'warning',
+	                delay: 2500,
+	                allow_dismiss: true
+	            });
+
 			}
 			$scope.fgShowHide=true;			
 			$scope.item=null;
 		});
 	};			
 	$scope.editItem=function(row){	
-		$scope.item=row.entity;
+		$scope.item=row;
+		$scope.item.Country =row.CCountryId;
+		$scope.item.State = null;
+		$scope.item.Name = row.CName;
+		loadData('get_State_list',{'id': row.CCountryId}).success(function(data){$scope.StateList=data; $scope.item.State =row.StateId});
 		
 		$scope.fgShowHide=false;				
 	};
 	$scope.deleteItem=function(row){
+		console.log(row);
 		if(confirm('Delete sure!')){
 			var id = {'id':row};
 			loadData('delete',id).success(function(data){
@@ -66,6 +80,17 @@ function CityCtrl($scope, $http){
 		                allow_dismiss: true
 		            });
 			});
+	};
+	$scope.getStateList=function(){
+		console.log($scope.item.Country);
+			$scope.errors = {};
+	
+		if($scope.item.Country ==null || $scope.item.Country ==''){
+			$scope.countryError = true;
+			$scope.errors.countryMsg = 'Please select Country.';
+			return false;
+		}
+	loadData('get_State_list',{'id': $scope.item.Country}).success(function(data){$scope.StateList=data; $scope.item.State =null});
 	};
 	
 	//pager events
@@ -146,6 +171,7 @@ console.log(page);
 		}
 		return source;
 	}
+	
 }
  CityCtrl.prototype.init=function($scope){
 	$scope.search=null;

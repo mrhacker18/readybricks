@@ -37,7 +37,7 @@
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="item in list">
-                                <td>{{item.Name}}</td>
+                                <td>{{item.CName}}</td>
                                 <td class="text-center">
                                     <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i></button>
                                     <button class="ml-0 mb-2 btn btn-outline-danger " ng-click="deleteItem(item)" type="button"> <i class="os-icon os-icon-ui-15" style="margin-top: -3px;"></i></button>
@@ -76,7 +76,7 @@
     <form action="#"  name="myForm" method="post" enctype="multipart/form-data"  onsubmit="return false;">
         <div class="form-group" ng-class="nameError ? 'has-error':''">
             <label>Country Name</label>
-            <input type="text" name="name" id="name" ng-model="item.CompanyName"  class="form-control" placeholder="Country Name" ng-focus="hideErrorMsg('nameError')">
+            <input type="text" name="name" id="name" ng-model="item.CountryName"  class="form-control" placeholder="Country Name" ng-focus="hideErrorMsg('nameError')">
             <span ng-show="nameError" ng-bind="errors.nameMsg" class="help-block"></span>
         </div>
         

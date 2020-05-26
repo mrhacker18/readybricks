@@ -14,7 +14,7 @@ class Country_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('category.catId,category.catName,category.catStatus');
+			->select('country.CId,country.CName,country.CStatus');
 // 			->get('category')
 			
 // ->join('Navigations', 'Roles.NavigationId = Navigations.NavigationId', 'left outer');
@@ -25,7 +25,7 @@ class Country_model extends CI_Model
 	}
 	public function get_page_where($size, $pageno, $params){
 		$this->db->limit($size, $pageno)
-		->select('catId,catName,catStatus');
+		->select('CId,catName,catStatus');
 		if(isset($params->search) && !empty($params->search)){
 				$this->db->where("catName LIKE '%$params->search%'");
 //				$this->db->like("catName",$params->search);
@@ -42,7 +42,7 @@ class Country_model extends CI_Model
 
 		if(isset($params->search) && !empty($params->search)){
 				$this->db->where("catName LIKE '%$params->search%'");
-				// $this->db->like("catId",$params->search);
+				// $this->db->like("CId",$params->search);
 				// $this->db->like("catName",$params->search);
 			}	
 		return $this->db->count_all_results($this->table);
@@ -54,9 +54,15 @@ class Country_model extends CI_Model
 	}
     public function get($id)
     {
-        return $this->db->where('RoleId', $id)->get($this->table)->row();
+        return $this->db->where('CId', $id)->get($this->table)->row();
     }
   
+	public function checkName($name,$id=null){
+		if($id){
+			return $this->db->where('CName', $name)->where('CId !=',$id)->get($this->table)->row();
+		}
+		return $this->db->where('CName', $name)->get($this->table)->row();
+	}
     public function add($data)
     {
         $this->db->insert($this->table, $data);
@@ -65,17 +71,17 @@ class Country_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('CatId', $id)->update($this->table, $data);
+        return $this->db->where('CId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
     {
-        $this->db->where('CatId', $id)->delete($this->table);
+        $this->db->where('CId', $id)->delete($this->table);
         return $this->db->affected_rows();
     }
     public function changestatus($id, $data)
     {
-        return $this->db->where('CatId', $id)->update($this->table, $data);
+        return $this->db->where('CId', $id)->update($this->table, $data);
     }
 	
 }

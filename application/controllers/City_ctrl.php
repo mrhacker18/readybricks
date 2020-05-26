@@ -4,7 +4,10 @@ require_once('./application/libraries/base_ctrl.php');
 class City_ctrl extends base_ctrl {
 	function __construct() {
 		parent::__construct();		
-	    $this->load->model('Category_model','model');
+		$this->load->model('City_model','model');
+		$this->load->model('country_model','country');
+	    $this->load->model('state_model','state');
+	    $this->load->model('city_model','city');
 	}
 	public function index()
 	{
@@ -26,22 +29,40 @@ class City_ctrl extends base_ctrl {
 		$success=FALSE;
 		$msg= 'You are not permitted.';
 		$id=0;
-		$tmpdata['catName']=$data->name;
-		$tmpdata['catStatus']='1';
-		if(!isset($data->RoleId))
+		// echo "<pre>";
+		// print_r($data);
+		// exit;
+		$tmpdata['CName']=$data->Name;
+		$tmpdata['CCountryId']=$data->Country;
+		$tmpdata['CStateId']=isset($data->State)?$data->State:$data->CStateId;
+		$tmpdata['CStatus']='1';
+		if(!isset($data->CityId))
 		{
-			if($this->auth->IsInsert){
-				$id=$this->model->add($tmpdata);
-				$msg='Data inserted successfully';
-				$success=TRUE;
+			if($this->model->getName($data->Name,$data->State,$data->Country)){
+				$msg='Data Already Exist';
+				$success=FALSE;
+			}else{
+				if($this->auth->IsInsert){
+					$id=$this->model->add($tmpdata);
+					$msg='Data inserted successfully';
+					$success=TRUE;
+				}
 			}
 					
 		}
 		else{
 			if($this->auth->IsUpdate){
-				$id=$this->model->update($data->RoleId, $data);
-				$success=TRUE;
-				$msg='Data updated successfully';				
+				// echo "<pre>";
+				// print_r($this->model->getName($data->Name,$data->State,$data->Country,$data->CityId));
+				// exit;
+				if($this->model->getName($data->Name,$tmpdata['CStateId'],$data->Country,$data->CityId)){
+					$msg='Data Already Exist';
+					$success=FALSE;
+				}else{
+					$id=$this->model->update($data->CityId, $tmpdata);
+					$success=TRUE;
+					$msg='Data updated successfully';	
+				}			
 			}		
 		}
 		print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
@@ -51,8 +72,10 @@ class City_ctrl extends base_ctrl {
 	{
 		if($this->auth->IsDelete){
 			$data=$this->post();
-
-			print json_encode( array("success"=>TRUE,"msg"=>$this->model->delete($data->id)));
+			// echo "<pre>";
+			// print_r($data);
+			// exit;
+			print json_encode( array("success"=>TRUE,"msg"=>$this->model->delete($data->id->CityId)));
 		}
 		else{
 			print json_encode( array("success"=>FALSE,"msg"=>"You are not permitted"));
@@ -91,6 +114,17 @@ class City_ctrl extends base_ctrl {
 	{	
 		$data=$this->post();
 		print json_encode($this->model->get_page_where($data->size, $data->pageno, $data));
+	}
+	public function get_Country_list(){
+		print  json_encode($this->country->get_all());
+	}
+	public function get_State_list(){
+		$data=$this->post();
+		print  json_encode($this->state->get_all_by_countryId($data->id));
+	}
+	public function get_City_list(){
+		$data=$this->post();
+		print  json_encode($this->city->get_all_by_countryId_stateId($data->cId,$data->sId));
 	}	
 }
 

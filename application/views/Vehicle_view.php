@@ -37,7 +37,7 @@
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="item in list">
-                                <td>{{item.Name}}</td>
+                                <td>{{item.FirstName}} {{item.LastName}}</td>
                                 <td>Abc123</td>
                                 <td>DEL-01-2011</td>
                                 <td class="text-center">

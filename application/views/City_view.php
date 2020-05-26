@@ -1,4 +1,4 @@
-<script src="static/appScript/CityCtrl.js"></script>
+<script src="static/appScript/CityCtrl.js?hjd"></script>
 <script>function getAuth(){ <?php echo $fx ?>;}</script>
 <?php if ($read): ?>
 <div ng-controller="CityCtrl">
@@ -37,9 +37,9 @@
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="item in list">
-                                <td>{{item.Name}}</td>
-                                <td>Abc123</td>
-                                <td>DEL-01-2011</td>
+                                <td>{{item.country_name}}</td>
+                                <td>{{item.SName}}</td>
+                                <td>{{item.CName}}</td>
                                 <td class="text-center">
                                     <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i></button>
                                     <button class="ml-0 mb-2 btn btn-outline-danger " ng-click="deleteItem(item)" type="button"> <i class="os-icon os-icon-ui-15" style="margin-top: -3px;"></i></button>
@@ -78,16 +78,18 @@
     <form action="#"  name="myForm" method="post" enctype="multipart/form-data"  onsubmit="return false;">
         <div class="form-group" ng-class="countryError ? 'has-error':''">
             <label>Select Country</label>
-            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')">
+            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')" ng-change="getStateList()">
                 <option selected>Select Country</option>
+                <option  ng-repeat="country in CountryList" value="{{country.CId}}" ng-selected="item.CCountryId == country.CId">{{country.CName}}</option>
             </select>
             <span ng-show="countryError" ng-bind="errors.countryMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>
 
         <div class="form-group" ng-class="stateError ? 'has-error':''">
             <label>Select State</label>
-            <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')">
+            <select name="state" id="state" ng-model="item.State"  class="form-control" ng-focus="hideErrorMsg('stateError')"  class="form-control">
                 <option selected>Select State</option>
+                <option  ng-repeat="state in StateList" value="{{state.StateId}}" ng-selected="item.CStateId == state.StateId">{{state.SName}}</option>
             </select>
             <span ng-show="stateError" ng-bind="errors.stateMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>

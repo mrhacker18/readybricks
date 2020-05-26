@@ -169,6 +169,7 @@ console.log($scope.item);
 		$scope.viewProfileDetail = true;
 	}
 	$scope.deleteItem=function(row){
+		console.log(row);
 		if(confirm('Delete sure!')){
 			var id = {'id':row};
 			loadData('delete',id).success(function(data){

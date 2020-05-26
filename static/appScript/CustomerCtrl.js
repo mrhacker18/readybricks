@@ -5,6 +5,7 @@ function CustomerCtrl($scope, $http){
 	
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
+	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data; $scope.item.Country=null;});
 	
 	//CRUD operation
 	$scope.saveItem=function(){	
@@ -39,11 +40,48 @@ function CustomerCtrl($scope, $http){
 				$scope.item=null;
 			}
 		});
-	};			
+	};		
+	$scope.getStateList=function(){
+		console.log($scope.item.Country);
+			$scope.errors = {};
+
+		if($scope.item.Country ==null || $scope.item.Country ==''){
+            $scope.countryError = true;
+            $scope.errors.countryMsg = 'Please select Country.';
+            return false;
+        }
+	loadData('get_State_list',{'id': $scope.item.Country}).success(function(data){$scope.StateList=data; $scope.item.State =null});
+	};
+
+	$scope.getCityList=function(){
+		console.log($scope.item.State);
+		$scope.errors = {};
+		if($scope.item.Country ==null || $scope.item.Country ==""){
+            $scope.countryError = true;
+            $scope.errors.countryMsg = 'Please select Country.';
+            return false;
+        }
+		if($scope.item.State==null && $scope.item.State !=""){
+            $scope.stateError = true;
+            $scope.errors.stateMsg = 'Please select State.';
+            return false;
+        }
+		loadData('get_City_list',{'cId': $scope.item.Country,'sId':$scope.item.State}).success(function(data){$scope.CityList=data; $scope.item.City=null});
+	};	
 	$scope.editItem=function(row){	
 		console.log(row.entity);
 		$scope.item=row;
 		$scope.datatype='Edit';
+		$scope.item.VatNo=row.VatNumber;
+		$scope.item.GstNo=row.GSTIN;
+		$scope.item.Name=row.FirstName+' '+row.LastName;
+		$scope.item.Address=row.Address;
+		$scope.item.CompanyName=row.CompanyName;
+		$scope.item.PhoneNo=row.MobileNumber;
+		$scope.item.Country=row.CountryId;
+		loadData('get_State_list',{'id': row.CountryId}).success(function(data){$scope.StateList=data; $scope.item.State =row.StateId});
+		loadData('get_City_list',{'cId': row.CountryId,'sId':row.StateId}).success(function(data){$scope.CityList=data; $scope.item.City=row.CityId});
+
 		console.log($scope.item);
 		
 		$scope.fgShowHide=false;				
@@ -55,7 +93,7 @@ function CustomerCtrl($scope, $http){
 	}
 	$scope.deleteItem=function(row){
 		if(confirm('Delete sure!')){
-			var id = {'id':row};
+			var id = {'id':row.CustId};
 			loadData('delete',id).success(function(data){
 				loadGridData($scope.pagingOptions.pageSize,$scope.pagingOptions.currentPage);
 		            $.bootstrapGrowl('<h4>Success!</h4> <p>Data removed successfully</p>', {
