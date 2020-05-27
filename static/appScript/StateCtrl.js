@@ -5,42 +5,56 @@ function StateCtrl($scope, $http){
 	
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
+	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data; $scope.item.Country=null;});
 	
 	//CRUD operation
 	$scope.saveItem=function(){	
 		var record={};
 		$scope.errors = {};
 		$scope.nameError =false;
-		if($scope.state==null || $scope.state=="" ){
+		console.log($scope.item);
+		//return false;
+		if($scope.item==null || $scope.item=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter state name.';
             return false;
         }
-		if($scope.state.name==null || $scope.state.name=="" ){
+		if($scope.item.Name==null || $scope.item.Name=="" ){
             $scope.nameError = true;
             $scope.errors.nameMsg = 'Please enter state name.';
             return false;
         }
-		angular.extend(record,$scope.state);
+		angular.extend(record,$scope.item);
 				//record.name=undefined;
 
 		loadData('save',record).success(function(data){
-
-            $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
-                type: 'success',
-                delay: 2500,
-                allow_dismiss: true
-            });
-			//toastr.success(data.msg);
 			if(data.success){
 				loadGridData($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+				$.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
+					type: 'success',
+					delay: 2500,
+					allow_dismiss: true
+				});
+				//toastr.success(data.msg);
+
+			}else{
+				$.bootstrapGrowl('<h4>Warning!</h4> <p>'+data.msg+'</p>', {
+					type: 'warning',
+					delay: 2500,
+					allow_dismiss: true
+				});
 			}
 			$scope.fgShowHide=true;			
 			$scope.item=null;
 		});
 	};			
 	$scope.editItem=function(row){	
-		$scope.item=row.entity;
+		// console.log(row.entity);
+		$scope.item=row;
+		$scope.datatype='Edit';
+		$scope.item.Name=row.SName;
+		$scope.item.Country=row.SCountryId;
+
 		
 		$scope.fgShowHide=false;				
 	};

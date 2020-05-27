@@ -11,7 +11,8 @@ class Transporter_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('CustId,Name,PhoneNo,AltPhoneNo,Address,Date,Status');
+			->select('users.UserId,users.CountryId,users.StateId,users.CityId,users.CompanyName,transporter.TransId,users.FirstName,users.LastName,users.MobileNumber ,users.Address,users.Email,users.Status,transporter.GSTIN,transporter.VatNumber')
+			->join('users','users.UserId=transporter.UserId');
 			
 		$data=$this->db->get($this->table)->result();
 		$total=$this->count_all();
@@ -19,7 +20,7 @@ class Transporter_model extends CI_Model
 	}
 	public function get_page_where($size, $pageno, $params){
 		$this->db->limit($size, $pageno)
-		->select('CustId,Name,PhoneNo,AltPhoneNo,Address,Date,Status');
+		->select('TransId,Name,PhoneNo,AltPhoneNo,Address,Date,Status');
 		if(isset($params->search) && !empty($params->search)){
 				$this->db->where("Name LIKE '%$params->search%' OR PhoneNo LIKE '%$params->search%' OR Address LIKE '%$params->search%'  ");
 //				$this->db->like("catName",$params->search);
@@ -47,7 +48,7 @@ class Transporter_model extends CI_Model
 	}
     public function get($id)
     {
-        return $this->db->where('CustId', $id)->get($this->table)->row();
+        return $this->db->where('TransId', $id)->get($this->table)->row();
     }
   
     public function add($data)
@@ -58,17 +59,17 @@ class Transporter_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('CustId', $id)->update($this->table, $data);
+        return $this->db->where('TransId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
     {
-        $this->db->where('CustId', $id)->delete($this->table);
+        $this->db->where('TransId', $id)->delete($this->table);
         return $this->db->affected_rows();
     }
     public function changestatus($id, $data)
     {
-        return $this->db->where('CustId', $id)->update($this->table, $data);
+        return $this->db->where('TransId', $id)->update($this->table, $data);
     }
     public function getmobile($mobile)
     {
@@ -76,12 +77,12 @@ class Transporter_model extends CI_Model
     }
 
 	public function searchcustomer($params){
-	$this->db->select('customer.CustId,customer.Name,customer.PhoneNo,customer.AltPhoneNo,customer.Address as OrderAddress,orders.SerialNo')
-	->join('orders', 'orders.OCustId = CustId', 'inner');
+	$this->db->select('customer.TransId,customer.Name,customer.PhoneNo,customer.AltPhoneNo,customer.Address as OrderAddress,orders.SerialNo')
+	->join('orders', 'orders.OTransId = TransId', 'inner');
 	$this->db->where("Name LIKE '%$params->search%' OR PhoneNo LIKE '%$params->search%' OR customer.Address LIKE '%$params->search%' OR orders.SerialNo LIKE '%$params->search%'");
 		$this->db->where('orders.Status !=', '4');
 
-	$this->db->group_by('customer.CustId');
+	$this->db->group_by('customer.TransId');
 	$data=$this->db->get($this->table)->result();
 
 	return $data;

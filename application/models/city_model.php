@@ -18,7 +18,9 @@ class City_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('category.catId,category.catName,category.catStatus');
+			->select('city.CityId,city.CName,city.CStatus,city.CCountryId,city.CStateId,state.SName,country.CName as country_name')
+			->join('state','state.StateId=city.CStateId')
+			->join('country','country.CId=city.CCountryId');
 // 			->get('category')
 			
 // ->join('Navigations', 'Roles.NavigationId = Navigations.NavigationId', 'left outer');
@@ -58,7 +60,14 @@ class City_model extends CI_Model
 	}
     public function get($id)
     {
-        return $this->db->where('RoleId', $id)->get($this->table)->row();
+        return $this->db->where('CityId', $id)->get($this->table)->row();
+	}
+	public function getName($name,$state,$country,$id=null)
+    {
+		if($id){
+			return $this->db->where('CName', $name)->where('CStateId',$state)->where('CCountryId',$country)->where('CityId !=',$id)->get($this->table)->row();
+		}
+        return $this->db->where('CName', $name)->where('CStateId',$state)->where('CCountryId',$country)->get($this->table)->row();
     }
   
     public function add($data)
@@ -69,12 +78,12 @@ class City_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('CatId', $id)->update($this->table, $data);
+        return $this->db->where('CityId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
     {
-        $this->db->where('CatId', $id)->delete($this->table);
+        $this->db->where('CityId', $id)->delete($this->table);
         return $this->db->affected_rows();
     }
     public function changestatus($id, $data)

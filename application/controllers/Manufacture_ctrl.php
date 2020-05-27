@@ -48,7 +48,7 @@ class Manufacture_ctrl extends base_ctrl {
 			$tmpdata['Role'] =3;
 			$tmpdata['Type'] ='Normal';
 			$tmpdata['Status']='1';
-
+ 
 			if($this->users->checkEmail($tmpdata['Email'])){
 
 				$msg='Email Address Already Exists';

@@ -11,7 +11,8 @@ class Customer_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('CustId,Name,PhoneNo,AltPhoneNo,Address,Date,Status');
+			->select('users.FirstName,users.LastName,users.StateId,users.CountryId,users.CityId,users.UserId,customer.CustId,users.CompanyName,users.Address,users.Status,users.MobileNumber,users.Email,customer.VatNumber,customer.GSTIN')
+			->join('users','customer.UserId=users.UserId');
 			
 		$data=$this->db->get($this->table)->result();
 		$total=$this->count_all();

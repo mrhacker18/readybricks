@@ -1,4 +1,4 @@
-<script src="static/appScript/StateCtrl.js"></script>
+<script src="static/appScript/StateCtrl.js?41"></script>
 <script>function getAuth(){ <?php echo $fx ?>;}</script>
 <?php if ($read): ?>
 <div ng-controller="StateCtrl">
@@ -25,21 +25,22 @@
                         <table  width="100%" class="table table-lightborder">
                         <thead>
                             <tr>
-                                <th>Country Name</th><th>State Name</th>
+                                <th>Country Name</th>
+                                <th>State Name</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Country Name</th><th>State Name</th>
+                                <th>Country Name</th>
+                                <th>State Name</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="item in list">
-                                <td>{{item.Name}}</td>
-                                <td>Abc123</td>
-                                <td>DEL-01-2011</td>
+                                <td>{{item.CName}}</td>
+                                <td>{{item.SName}}</td>
                                 <td class="text-center">
                                     <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i></button>
                                     <button class="ml-0 mb-2 btn btn-outline-danger " ng-click="deleteItem(item)" type="button"> <i class="os-icon os-icon-ui-15" style="margin-top: -3px;"></i></button>
@@ -78,8 +79,10 @@
     <form action="#"  name="myForm" method="post" enctype="multipart/form-data"  onsubmit="return false;">
         <div class="form-group" ng-class="countryError ? 'has-error':''">
             <label>Select Country</label>
-            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')">
-                <option selected>Select Country</option>
+            <select name="country" id="country" ng-model="item.Country"  class="form-control" ng-focus="hideErrorMsg('countryError')"  class="form-control" ng-change="getStateList()" >
+                <option value="null">Select Country</option>
+                <option  ng-repeat="country in CountryList" value="{{country.CId}}" ng-selected="item.SCountryId == country.CId">{{country.CName}}</option>
+
             </select>
             <span ng-show="countryError" ng-bind="errors.countryMsg" class="help-block form-text text-muted form-control-feedback"></span>
         </div>

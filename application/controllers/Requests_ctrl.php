@@ -4,7 +4,7 @@ require_once('./application/libraries/base_ctrl.php');
 class Requests_ctrl extends base_ctrl {
 	function __construct() {
 		parent::__construct();		
-	    $this->load->model('customer_model','model');
+	    $this->load->model('request_model','model');
 	}
 	public function index()
 	{
