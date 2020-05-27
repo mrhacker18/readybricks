@@ -69,7 +69,7 @@ class Product_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('CatId', $id)->update($this->table, $data);
+        return $this->db->where('ProductId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
