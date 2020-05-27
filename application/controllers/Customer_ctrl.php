@@ -89,7 +89,7 @@ class Customer_ctrl extends base_ctrl {
 	{
 		$data=$this->post();
 		$newdata['Status']=$data->status;
-		$this->model->changestatus($data->id,$newdata);
+		$this->users->changestatus($data->id,$newdata);
 		$success=TRUE;
 		$msg='Status Changed successfully';				
 		print json_encode(array('success'=>$success, 'msg'=>$msg));

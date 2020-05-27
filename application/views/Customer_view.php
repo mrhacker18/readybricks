@@ -1,4 +1,4 @@
-<script src="static/appScript/CustomerCtrl.js?ddef"></script>
+<script src="static/appScript/CustomerCtrl.js"></script>
 <script>function getAuth(){ <?php echo $fx ?>;}</script>
 <?php if ($read): ?>
 <div ng-controller="CustomerCtrl">
@@ -43,12 +43,12 @@
                                 <td>{{item.Address}}
                                 </td>
                                 <td>
-                                    <a class="badge badge-danger" href="" ng-if="$index % 2 == 0">Deactive</a>
-                                    <a class="badge badge-success" href="" ng-if="$index % 2 != 0">Active</a>
+                                    <a class="badge badge-danger" href="" ng-if="item.Status % 2 == 0">Deactive</a>
+                                    <a class="badge badge-success" href="" ng-if="item.Status % 2 != 0">Active</a>
                                 </td>
                                 <td class="text-center">
-                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-danger" ng-if="$index % 2 != 0">Deactive</button> 
-                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-success" ng-if="$index % 2 == 0">Active</button>
+                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-danger" ng-click="changeItemStatus(item.UserId,0)" ng-if="item.Status % 2 != 0">Deactive</button> 
+                                   <button type="button" class="ml-3 mb-2 btn  btn-xs btn-success" ng-click="changeItemStatus(item.UserId,1)" ng-if="item.Status % 2 == 0">Active</button>
 
                                     <button class="ml-3 mb-2 btn btn-outline-info " ng-click="viewItem(item)" type="button">  <i class="os-icon os-icon-eye" style="margin-top: -3px;"></i></button>
                                     <button class="mb-2 btn btn-outline-info " ng-click="editItem(item)" type="button">  <i class="os-icon os-icon-ui-49" style="margin-top: -3px;"></i></button>
@@ -216,41 +216,39 @@
         		   <h6 class="element-header"><a href="" class="btn btn-sm btn-success"   ng-click="hideForm()">Back </a> Customer Detail</h6>
         		<div class="ecommerce-customer-info">
 			      <div class="ecommerce-customer-main-info">
-			      	<div class="ecc-name-letter ">
-			      			SM
-			      	</div>
+                  <div class="ecc-avatar" style="background-image: url(<?php echo base_url(); ?>/static/img/avatar1.jpg)"></div>
 			       <!--  <div class="ecc-avatar" style="background-image: url(<?php echo base_url(); ?>/static/img/avatar1.jpg)"></div> -->
 			        <div class="ecc-name">
-			          Sunil Mehta
+                    {{Name}}
 			        </div>
 			      </div>
 			      <div class="ecommerce-customer-sub-info">
 			      	
 			        <div class="ecc-sub-info-row">
 			          <div class="sub-info-label">Company Name </div>
-			          <div class="sub-info-value">Raj and Sons.</div>
+			          <div class="sub-info-value">{{CompanyName}}</div>
 			        </div>
 			        <div class="ecc-sub-info-row">
 			          <div class="sub-info-label">Email </div>
-			          <div class="sub-info-value"><a href="#">michael.collins@gmail.com</a><strong class="badge badge-danger" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
+			          <div class="sub-info-value"><a href="#">{{Email}}</a><strong class="badge badge-danger" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
 			        </div>
 
 			        <div class="ecc-sub-info-row">
 			          <div class="sub-info-label">Phone Number</div>
-			          <div class="sub-info-value"><a href="#">839.938.3944</a> <strong class="badge badge-success" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
+			          <div class="sub-info-value"><a href="#">{{MobileNumber}}</a> <strong class="badge badge-success" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
 			        </div>
 
 			        <div class="ecc-sub-info-row">
 			          <div class="sub-info-label">Address</div>
-			          <div class="sub-info-value">1726 Praduman Park, Block 104<br/>New Delhi, IN 10001</div>
+			          <div class="sub-info-value">{{Address}} {{Landmark}}<br/>{{State}}, {{Country}}</div>
 			        </div>
                    <div class="ecc-sub-info-row">
                     <div class="sub-info-label">GSTIN / UIN Number</div>
-                    <div class="sub-info-value">255588778781</div>
+                    <div class="sub-info-value">{{GSTIN}}</div>
                   </div>
                    <div class="ecc-sub-info-row">
                     <div class="sub-info-label">Vat Number</div>
-                    <div class="sub-info-value">5487878878</div>
+                    <div class="sub-info-value">{{VatNumber}}</div>
                   </div>
 
 

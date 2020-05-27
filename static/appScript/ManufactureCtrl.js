@@ -164,7 +164,17 @@ console.log($scope.item);
 		$scope.fgShowHide=false;				
 	};
 	$scope.viewItem=function(row){	
+		console.log(row);
 		$scope.item = row;
+		$scope.Email=row.Email;
+		$scope.CompanyName=row.CompanyName;
+		$scope.MobileNumber=row.MobileNumber;
+		$scope.Address=row.Address;
+		$scope.Landmark=row.Landmark;
+		$scope.GSTIN=row.GSTIN;
+		$scope.State=row.SName;
+		$scope.Country=row.CName;
+		$scope.VatNumber=row.VatNumber;
 		$scope.fgShowHide = false;
 		$scope.viewProfileDetail = true;
 	}

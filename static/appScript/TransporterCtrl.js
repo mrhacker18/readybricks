@@ -6,7 +6,28 @@ function TransporterCtrl($scope, $http){
 	//Grid,dropdown data loading
 	loadGridData($scope.pagingOptions.pageSize,1);
 	loadData('get_Country_list',{}).success(function(data){$scope.CountryList=data; $scope.item.Country=null;});
-	
+	// $scope.changeStatus=function(){	
+	// 	var record={};
+	// 	$scope.errors = {};
+	// 	$scope.nameError =false;
+	// 	angular.extend(record,$scope.item);
+	// 			//record.name=undefined;
+
+	// 	loadData('changeStatus',record).success(function(data){
+
+    //         $.bootstrapGrowl('<h4>Success!</h4> <p>'+data.msg+'</p>', {
+    //             type: 'success',
+    //             delay: 2500,
+    //             allow_dismiss: true
+    //         });
+	// 		//toastr.success(data.msg);
+	// 		if(data.success){
+	// 			loadGridData($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+	// 			$scope.fgShowHide=true;			
+	// 			$scope.item=null;
+	// 		}
+	// 	});
+	// };
 	//CRUD operation
 	$scope.saveItem=function(){	
 		var record={};
@@ -88,7 +109,17 @@ function TransporterCtrl($scope, $http){
 		$scope.fgShowHide=false;				
 	};
 	$scope.viewItem=function(row){	
+		console.log(row);
 		$scope.item = row;
+		$scope.Email=row.Email;
+		$scope.Name=row.FirstName+' '+row.LastName;
+		$scope.MobileNumber=row.MobileNumber;
+		$scope.Address=row.Address;
+		$scope.Landmark=row.Landmark;
+		$scope.GSTIN=row.GSTIN;
+		$scope.State=row.SName;
+		$scope.Country=row.CName;
+		$scope.VatNumber=row.VatNumber;
 		$scope.fgShowHide = false;
 		$scope.viewProfileDetail = true;
 	}

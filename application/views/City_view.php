@@ -1,4 +1,4 @@
-<script src="static/appScript/CityCtrl.js?hjd"></script>
+<script src="static/appScript/CityCtrl.js"></script>
 <script>function getAuth(){ <?php echo $fx ?>;}</script>
 <?php if ($read): ?>
 <div ng-controller="CityCtrl">

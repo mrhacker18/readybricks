@@ -98,6 +98,18 @@ class Transporter_ctrl extends base_ctrl {
 		print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
 	}
 
+	// public function changeStatus(){
+	// 	$data=$this->post();
+	// 	echo "<pre>";
+	// 	print_r($data);
+	// 	exit;
+	// 	$success=FALSE;
+	// 	$msg= 'You are not permitted.';
+	// 	$id=0;
+	// 	// $tmpdata['Status']=
+	// 	$id=$this->users->update($data->UserId, $tmpdata);
+	// 	print json_encode(array('success'=>$success, 'msg'=>$msg, 'id'=>$id));
+	// }
 	public function delete()
 	{
 		if($this->auth->IsDelete){
@@ -112,8 +124,11 @@ class Transporter_ctrl extends base_ctrl {
 	public function changestatus()
 	{
 		$data=$this->post();
+		// echo "<pre>";
+		// print_r($data);
+		// exit;
 		$newdata['Status']=$data->status;
-		$this->model->changestatus($data->id,$newdata);
+		$this->users->changestatus($data->id->UserId,$newdata);
 		$success=TRUE;
 		$msg='Status Changed successfully';				
 		print json_encode(array('success'=>$success, 'msg'=>$msg));

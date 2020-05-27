@@ -11,8 +11,10 @@ class Manufacture_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('users.*,manufacture.MenuId,manufacture.GSTIN,manufacture.VatNumber')
-		 	->join('users', 'users.UserId = manufacture.UserId', 'inner')
+			->select('country.CName,state.SName,users.*,manufacture.MenuId,manufacture.GSTIN,manufacture.VatNumber')
+			 ->join('users', 'users.UserId = manufacture.UserId', 'inner')
+			->join('country','country.CId=users.CountryId','left')
+			->join('state','state.StateId=users.StateId','left')
 		 	->group_by('UserId');
 		$data=$this->db->get($this->table)->result();
 		$total=$this->count_all();

@@ -1,4 +1,4 @@
-<script src="static/appScript/StateCtrl.js?41"></script>
+<script src="static/appScript/StateCtrl.js"></script>
 <script>function getAuth(){ <?php echo $fx ?>;}</script>
 <?php if ($read): ?>
 <div ng-controller="StateCtrl">
