@@ -233,7 +233,7 @@
             <div class="ecommerce-customer-main-info">
               <div class="ecc-avatar" style="background-image: url(<?php echo base_url(); ?>/static/img/avatar1.jpg)"></div>
               <div class="ecc-name">
-               Raj and Sons.
+              {{CompanyName}}
               </div>
             </div>
             <div class="ecommerce-customer-sub-info">
@@ -241,26 +241,26 @@
               
               <div class="ecc-sub-info-row">
                 <div class="sub-info-label">Email </div>
-                <div class="sub-info-value"><a href="#">michael.collins@gmail.com</a><strong class="badge badge-danger" style="float: right;"><i class="os-icon os-icon-close " style="font-weight: bold;"></i></strong></div>
+                <div class="sub-info-value"><a href="#">{{Email}}</a><strong class="badge badge-danger" style="float: right;"><i class="os-icon os-icon-close " style="font-weight: bold;"></i></strong></div>
               </div>
 
               <div class="ecc-sub-info-row">
                 <div class="sub-info-label">Phone Number</div>
-                <div class="sub-info-value"><a href="#">839.938.3944</a> <strong class="badge badge-success" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
+                <div class="sub-info-value"><a href="#">{{MobileNumber}}</a> <strong class="badge badge-success" style="float: right;"><i class="os-icon os-icon-checkmark " ></i></strong></div>
               </div>
 
               <div class="ecc-sub-info-row">
                 <div class="sub-info-label">Address</div>
-                <div class="sub-info-value">1726 Praduman Park, Block 104<br/>New Delhi, IN 10001</div>
+                <div class="sub-info-value">{{Address}} {{Landmark}}<br/>{{State}}, {{Country}}</div>
               </div>
 
                <div class="ecc-sub-info-row">
                 <div class="sub-info-label">GSTIN / UIN Number</div>
-                <div class="sub-info-value">255588778781</div>
+                <div class="sub-info-value">{{GSTIN}}</div>
               </div>
                <div class="ecc-sub-info-row">
                 <div class="sub-info-label">Vat Number</div>
-                <div class="sub-info-value">5487878878</div>
+                <div class="sub-info-value">{{VatNumber}}</div>
               </div>
 
 

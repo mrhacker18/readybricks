@@ -11,10 +11,15 @@ class Transporter_model extends CI_Model
 	public function get_page($size, $pageno){
 		$this->db
 			->limit($size, $pageno)
-			->select('users.UserId,users.CountryId,users.StateId,users.CityId,users.CompanyName,transporter.TransId,users.FirstName,users.LastName,users.MobileNumber ,users.Address,users.Email,users.Status,transporter.GSTIN,transporter.VatNumber')
-			->join('users','users.UserId=transporter.UserId');
+			->select('country.CName,state.SName,users.UserId,users.CountryId,users.StateId,users.CityId,users.CompanyName,transporter.TransId,users.FirstName,users.LastName,users.MobileNumber ,users.Address,users.Email,users.Status,transporter.GSTIN,transporter.VatNumber')
+			->join('users','users.UserId=transporter.UserId')
+			->join('country','country.CId=users.CountryId','left')
+			->join('state','state.StateId=users.StateId','left');
 			
 		$data=$this->db->get($this->table)->result();
+		// echo "<pre>";
+		// print_r($data);
+		// exit;
 		$total=$this->count_all();
 		return array("data"=>$data, "total"=>$total);
 	}
