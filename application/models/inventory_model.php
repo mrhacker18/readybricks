@@ -1,15 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Product_model extends CI_Model
+class Inventory_model extends CI_Model
 {
-    public $table = 'product';
+    public $table = 'inventory';
 
-	public function get_Navigations_list(){
-		return $this->db->select('NavigationId, NavName')->get('Navigations')->result();
-	}
     public function get_all()
     {
-		return $this->db->where('PStatus','1')->get($this->table)->result();		
+		return $this->db->where('CStatus','1')->get($this->table)->result();		
     }
     public function get_all_by_userid($id)
     {
@@ -69,7 +66,7 @@ class Product_model extends CI_Model
 
     public function update($id, $data)
     {
-        return $this->db->where('ProductId', $id)->update($this->table, $data);
+        return $this->db->where('IProductId', $id)->update($this->table, $data);
     }
 
     public function delete($id)
